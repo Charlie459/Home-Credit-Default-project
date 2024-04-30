@@ -1,0 +1,117 @@
+---
+title: "EDA Assignment"
+author: "Charlie Vandel"
+date: "2024-02-26"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+setwd('/Users/charlievandel/desktop/school stuff/spring capstone')
+
+library(tidyverse)
+
+
+```
+
+## Introduction
+
+This project will explore data from Home Credit, a loan company that seeks to "broaden financial inclusion" for individuals who are unable to borrow money from banks. To better understand the datasets provided, we will use common Exploratory Data Analysis techniques such as Imputating NA's and plotting the data. The goal of the project is to clean the data and find potential variables that can accurately predict loan default.
+
+### The business problem:
+
+One of the most difficult aspects of homeownership for individuals with poor credit is finding a safe and trustworthy mortgage lender. All too often, companies prey on desperate customers who feel that they have no option other than to accept loans that are exploitative. Home Credit wants to help these individuals by finding metrics other than credit scores to predict a person's ability to repay debts, thereby giving more opportunities to people in need.
+
+### The analytic problem:
+
+We will explore two primary datasets: application_train and application_test. Application_train includes the binary target variable of whether or not the customer defaulted on their loan. Using this information, I will create a logistic model that fits the training set data and test the model's accuracy on the test data. If the model does poorly on the test data I may need to reduce over-fitting in the model.
+
+### While exploring the Home Credit datasets, I had questions about the following items:
+
+1.  What do the NA values mean? Are some indicating that the variable is not applicable and can be replaced with a zero? Or should some be imputed using the mean?
+
+2.  Have there been any similar datasets created from other companies, and could I refer to those accuracy variables to help me find which variables in this set are most predictive?
+
+3.  Because this is a binary target variable, I will be using a logistic regression model, but what other models should I consider?
+
+```{r, include=FALSE}
+
+train <- read_csv("application_train.csv")
+
+test <- read_csv("application_test.csv")
+head(test)
+```
+
+## Description of Data
+
+As mentioned above, the primary datasets for this project are the train and test data. These include variables such as:
+  A. target variable: 1 for if "the client had late payment more than X days on at least one of the first Y installments of the loan", 0 for all other cases.
+  B. Cash or revolving loan
+  C. Client owns a car
+and many other variables related to the client's expense history. There are over 200 variables in total, so it will be important to find an efficient method to select strong predictive relationships.
+
+There are also datasets relating to credit card balance and previous loans at Home Credit or other institutions.
+```{r}
+
+```
+
+## Discussion of Missing Data and Summary Table
+
+As seen in the table below, many of the variables have 100,000+ NA values. When using a logistic regression model, any NAs in the data will force the entire row to be omitted from the results. Because of how many NAs are in the data, this will strongly affect how accurate the model can be. 
+
+To fix this, we can replace the NA values with either the mean, or a 0 depending on what the NA refers in each variable. This information can be found in the data dictionary. For example, the variable OWN_CAR_AGE represents the number of years old the client's car is. This variable has 202929 NAs. Because these NAs likely mean that those clients do not own a car, we can replace these with the mean. We could impute "0" for these values as this would indicate that the car is brand new. 
+
+There are also many variables describing the client's housing. Because there are many clients who do not own a house, there are hundreds of thousands of NA values. Variables such as NONLIVINGAREA_AVG could be replaced with "0" for applicants who that question does not apply. 
+
+```{r}
+
+#In the code below, we assign the object count_missings to the function counting all of the NA values in the data. Below that we create a summary table showing the number of NAs for each collumn
+count_missings <- function(x) sum(is.na(x))
+
+train %>% 
+  summarize_all(count_missings)
+```
+
+## Exploratory visualizations
+
+In this section we will begin searching for the strongly predictive variables. I have plotted the relationship between the target variable and 3 other variables I believe will be predictive to test my hypothesis.
+Because I have a categorical variable (TARGET) and various continuous variables, I am representing the relationship between these using boxplots.
+
+```{r}
+
+#First I need to factor the target variable so that it will divide into the two categories (0,1)
+
+train <- train %>%
+  mutate(TARGET = factor(TARGET))
+
+#Below are the boxplots using ggplot
+
+ggplot(data = train,
+       mapping = aes(x = AMT_CREDIT, fill = TARGET)) +
+     geom_boxplot() +
+     labs(title = "Boxplot of AMT_CREDIT vs TARGET")
+
+ggplot(data = train,
+       mapping = aes(x = AMT_ANNUITY, fill = TARGET)) +
+     geom_boxplot() +
+     labs(title = "Boxplot of AMT_ANNUITY vs TARGET")
+
+
+ggplot(data = train,
+       mapping = aes(x = CNT_CHILDREN, fill = TARGET)) +
+     geom_boxplot() +
+     labs(title = "Boxplot of CNT_CHILDREN vs TARGET")
+
+
+```
+
+## Results
+
+As seen in the plots above, some of the variables I chose have a similar shape. This means that the binary variables (1,0) representing client loan default have a weaker relationship with this variable than other variables. For example, AMT_ANNUITY has a very similar mean in both 0 and 1. Comparing this to the AMT_CREDIT variable shows that the mean amount credit of defaulting clients is relatively different from the non defaulting client, suggesting there is a correlation or causation.
+
+There will need to be more variables tested to strengthen the accuracy of the linear model, but for now this is a good start for understanding the meaning of the variables in the set.
+```{r}
+```
