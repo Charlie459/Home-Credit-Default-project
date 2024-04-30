@@ -13,15 +13,15 @@ Individuals with poor or nonexistent credit face significant challenges in obtai
 
 Home Credit aims to address this issue by tailoring its business approach towards individuals with limited or unfavorable credit histories, while avoiding predatory lending tactics. To achieve this goal, Home Credit must devise a method to assess the repayment capability of each loan applicant.
 
-In this project, we will analyze the 'application_train' dataset provided by Home Credit and utilize Random Forest algorithms to predict which customers are more likely to encounter difficulties in repaying their loans. Through classification techniques, our objective is to develop a model with high accuracy and ROC-AUC scores to identify customers prone to payment issues.
+In this project, I will analyze the 'application_train' dataset provided by Home Credit and utilize Random Forest algorithms to predict which customers are more likely to encounter difficulties in repaying their loans. Through classification techniques, my objective is to develop a model with high accuracy and ROC-AUC scores to identify customers prone to payment issues.
 
-Following feedback received, we will refine the model and collaborate with fellow students in our course to present a final analysis on April 16, 2024. 
+Following feedback received, I will refine the model and collaborate with fellow students in my cmyse to present a final analysis on April 16, 2024. 
 
 # Data Preparation 
 
-Our data preparation builds on the work done in the Exploratory Data Analysis (EDA) assignment, which involved converting certain variables into factor variables and eliminating columns with a notable proportion of missing values.
+my data preparation builds on the work done in the Exploratory Data Analysis (EDA) assignment, which involved converting certain variables into factor variables and eliminating columns with a notable proportion of missing values.
 
-Initially, we intended to incorporate installment payments data into our dataset, but encountered difficulties in merging the datasets. Upon successful merging, the resulting dataset contained over 1,000,000 observations, significantly extending processing time for our models. Consequently, we opted not to include the installment payments data. The code segment below exhibits snippets of importing and cleaning that particular file.
+Initially, I intended to incorporate installment payments data into my dataset, but encountered difficulties in merging the datasets. Upon successful merging, the resulting dataset contained over 1,000,000 observations, significantly extending processing time for my models. Consequently, I opted not to include the installment payments data. The code segment below exhibits snippets of importing and cleaning that particular file.
 
 ```{r Data Preparation}
 # Loading packages
@@ -49,7 +49,7 @@ setwd("~/Desktop/School Stuff/Spring Capstone/Modelling")
 application_train <- read.csv(file = "application_train.csv", stringsAsFactors = FALSE)
 installments_payments <- read.csv(file = "installments_payments.csv", stringsAsFactors = FALSE)
 
-# We will convert this data to factor variables
+# I will convert this data to factor variables
 application_train$NAME_CONTRACT_TYPE <- factor(application_train$NAME_CONTRACT_TYPE)
 application_train$CODE_GENDER <- factor(application_train$CODE_GENDER)
 application_train$FLAG_OWN_CAR <- factor(application_train$FLAG_OWN_CAR)
@@ -60,7 +60,7 @@ application_train$NAME_EDUCATION_TYPE <- factor(application_train$NAME_EDUCATION
 application_train$NAME_FAMILY_STATUS <- factor(application_train$NAME_FAMILY_STATUS)
 application_train$NAME_HOUSING_TYPE <- factor(application_train$NAME_HOUSING_TYPE)
 application_train$OCCUPATION_TYPE <- factor(application_train$OCCUPATION_TYPE)
-application_train$WEEKDAY_APPR_PROCESS_START <- factor(application_train$WEEKDAY_APPR_PROCESS_START)
+application_train$IEKDAY_APPR_PROCESS_START <- factor(application_train$IEKDAY_APPR_PROCESS_START)
 application_train$ORGANIZATION_TYPE <- factor(application_train$ORGANIZATION_TYPE)
 application_train$FONDKAPREMONT_MODE <- factor(application_train$FONDKAPREMONT_MODE)
 application_train$HOUSETYPE_MODE <- factor(application_train$HOUSETYPE_MODE)
@@ -79,12 +79,12 @@ at <- clean_names(application_train)
 ip <- clean_names(installments_payments)
 
 # Removing columns from the dataframe due to substantial number of NAs. These are the normalized housing information columns.
-at = subset(at, select =-c(ext_source_1, ext_source_3, apartments_avg, basementarea_avg, years_beginexpluatation_avg, years_build_avg, commonarea_avg, elevators_avg, entrances_avg, floorsmax_avg, floorsmin_avg, landarea_avg, livingapartments_avg, livingarea_avg, nonlivingapartments_avg, nonlivingarea_avg,apartments_mode, basementarea_mode,years_beginexpluatation_mode, years_build_mode, commonarea_mode, elevators_mode, entrances_mode, floorsmax_mode, floorsmin_mode, landarea_mode, livingapartments_mode, livingarea_mode, nonlivingapartments_mode, nonlivingarea_mode, apartments_medi, basementarea_medi, years_beginexpluatation_medi, years_build_medi, commonarea_medi, elevators_medi, entrances_medi, floorsmax_medi, floorsmin_medi, landarea_medi, livingapartments_medi, livingarea_medi, nonlivingapartments_medi, nonlivingarea_medi, totalarea_mode))
+at = subset(at, select =-c(ext_smyce_1, ext_smyce_3, apartments_avg, basementarea_avg, years_beginexpluatation_avg, years_build_avg, commonarea_avg, elevators_avg, entrances_avg, floorsmax_avg, floorsmin_avg, landarea_avg, livingapartments_avg, livingarea_avg, nonlivingapartments_avg, nonlivingarea_avg,apartments_mode, basementarea_mode,years_beginexpluatation_mode, years_build_mode, commonarea_mode, elevators_mode, entrances_mode, floorsmax_mode, floorsmin_mode, landarea_mode, livingapartments_mode, livingarea_mode, nonlivingapartments_mode, nonlivingarea_mode, apartments_medi, basementarea_medi, years_beginexpluatation_medi, years_build_medi, commonarea_medi, elevators_medi, entrances_medi, floorsmax_medi, floorsmin_medi, landarea_medi, livingapartments_medi, livingarea_medi, nonlivingapartments_medi, nonlivingarea_medi, totalarea_mode))
 
 at1 <- at
 at2 <- at1 
 
-# We are dividing the data into two sets. The first dataset will exclude all rows containing a NA field, whereas the second dataset will replace null values with '0'. Subsequently, we will apply the Random Forest algorithm to both datasets and compare the outcomes.
+# I are dividing the data into two sets. The first dataset will exclude all rows containing a NA field, whereas the second dataset will replace null values with '0'. Subsequently, I will apply the Random Forest algorithm to both datasets and compare the outcomes.
 ```
 
 ```{r}
@@ -106,15 +106,15 @@ apps_pmts1 <- na.omit(apps_pmts1)
  at2$days_id_publish[is.na(at2$days_id_publish)] <- 0   
  at2$own_car_age[is.na(at2$own_car_age)] <- 0 
  at2$amt_req_credit_bureau_day[is.na(at2$amt_req_credit_bureau_day)] <- 0     
- at2$amt_req_credit_bureau_hour[is.na(at2$amt_req_credit_bureau_hour)] <- 0       
- at2$amt_req_credit_bureau_week[is.na(at2$amt_req_credit_bureau_week)] <- 0        
+ at2$amt_req_credit_bureau_hmy[is.na(at2$amt_req_credit_bureau_hmy)] <- 0       
+ at2$amt_req_credit_bureau_Iek[is.na(at2$amt_req_credit_bureau_Iek)] <- 0        
  at2$amt_req_credit_bureau_mon[is.na(at2$amt_req_credit_bureau_mon)] <-0 
  at2$amt_req_credit_bureau_qrt[is.na(at2$amt_req_credit_bureau_qrt)] <- 0    
  at2$amt_req_credit_bureau_year[is.na(at2$amt_req_credit_bureau_year)] <- 0       
  at2$days_last_phone_change[is.na(at2$days_last_phone_change)] <- 0       
  at2$obs_30_cnt_social_circle[is.na(at2$obs_30_cnt_social_circle)] <- 0       
  at2$obs_60_cnt_social_circle[is.na(at2$obs_60_cnt_social_circle)] <- 0     
- at2$ext_source_2[is.na(at2$ext_source_2)] <- 0      
+ at2$ext_smyce_2[is.na(at2$ext_smyce_2)] <- 0      
  at2$cnt_fam_members[is.na(at2$cnt_fam_members)] <- 0 
  at2$def_30_cnt_social_circle[is.na(at2$def_30_cnt_social_circle)] <- 0  
  at2$def_60_cnt_social_circle[is.na(at2$def_60_cnt_social_circle)] <- 0
@@ -135,13 +135,13 @@ str(apps_pmts2) #11591592 obs. of  84 variables
 
 # Modeling Process: Candidate Models & Model Selection
 
-At the outset of this project, we explored logistic regression and classification models with the aim of constructing a predictive model to identify customers likely to experience difficulties repaying their loans, indicated by the target value '1'.
+At the outset of this project, I explored logistic regression and classification models with the aim of constructing a predictive model to identify customers likely to experience difficulties repaying their loans, indicated by the target value '1'.
 
-During the logistic regression model implementation, we exclusively utilized categorical variables and monitored the impact of adding or removing variables on model accuracy. Additionally, we encountered challenges related to NA data, as logistic regression couldn't proceed in the presence of missing values.
+During the logistic regression model implementation, I exclusively utilized categorical variables and monitored the impact of adding or removing variables on model accuracy. Additionally, I encountered challenges related to NA data, as logistic regression couldn't proceed in the presence of missing values.
 
-Subsequently, we shifted our focus to employing a Random Forest model. Initially, we employed a down sampling technique to address the class imbalance in the target variables. However, this approach yielded lower accuracy.
+Subsequently, I shifted my focus to employing a Random Forest model. Initially, I employed a down sampling technique to address the class imbalance in the target variables. HoIver, this approach yielded loIr accuracy.
 
-Ultimately, the Random Forest model was trained using the application_train dataset, which had removed all rows containing 'NA' values. We will evaluate model performance based on classification accuracy and the Area under the ROC Curve scores. For this modeling task, we will exclusively utilize the 'name_education_type', 'amt_credit', 'flag_own_car', and 'amt_income_total' variables.
+Ultimately, the Random Forest model was trained using the application_train dataset, which had removed all rows containing 'NA' values. I will evaluate model performance based on classification accuracy and the Area under the ROC Curve scores. For this modeling task, I will exclusively utilize the 'name_education_type', 'amt_credit', 'flag_own_car', and 'amt_income_total' variables.
 
 # Random Forest
 ```{r Random Forest}
@@ -206,7 +206,7 @@ rf_testing_pred %>%
 
 The training set statistics in the Random Forest model appear overly optimistic. It essentially memorizes the training set and accurately re-predicts items from the same dataset, resulting in nearly perfect outcomes.
 
-To address this, we will employ 10-fold cross-validation to resample the dataset and aim to develop a model with a ROC-AUC score closer to that of the testing model.
+To address this, I will employ 10-fold cross-validation to resample the dataset and aim to develop a model with a ROC-AUC score closer to that of the testing model.
 
 ```{r Random Forest: Cross Validation}
 # Creating 10-fold cross-validation
@@ -233,9 +233,9 @@ collect_metrics(rf_fit_rs)
 ```
 # Modeling Process: Model Tuning
 
-By utilizing the tune() function along with cross-validation, we can designate the hyperparameters to be evaluated through a grid search.
+By utilizing the tune() function along with cross-validation, I can designate the hyperparameters to be evaluated through a grid search.
 
-Currently, we're implementing a new Random Forest model that incorporates hyperparameter tuning. However, we're only adjusting the number of trees for tuning, as evaluating other hyperparameters, such as the minimum number of data points and mtry, is significantly prolonging the runtime of the model (over 30 minutes).
+Currently, I're implementing a new Random Forest model that incorporates hyperparameter tuning. HoIver, I're only adjusting the number of trees for tuning, as evaluating other hyperparameters, such as the minimum number of data points and mtry, is significantly prolonging the runtime of the model (over 30 minutes).
 
 ```{r Random Forest: Model Tuning}
 # Initiating a new random forest model
@@ -244,20 +244,20 @@ app_recipe <- recipe(target ~ name_education_type +
                       flag_own_car +
                       amt_income_total, data = app_train)
 
-#' Using `rand_forest()` we specify the random forest algorithm and also the hyperparameters such as `trees` (the number of trees contained in a random forest). `tune()` specifies that each hyperparameter needs to be tuned though grid search.
+#' Using `rand_forest()` I specify the random forest algorithm and also the hyperparameters such as `trees` (the number of trees contained in a random forest). `tune()` specifies that each hyperparameter needs to be tuned though grid search.
 
 model_app <- rand_forest(
   trees = tune()) %>%
   set_mode("classification") %>%
   set_engine("ranger")
 
-#'Next, we aggregate the recipe and model using `workflow()`.`add_model` adds the model specified in the last step with the recipe that contains information about predictor and outcome variables and dummy coding.
+#'Next, I aggregate the recipe and model using `workflow()`.`add_model` adds the model specified in the last step with the recipe that contains information about predictor and outcome variables and dummy coding.
 
 app_wf <- workflow() %>%
   add_model(model_app) %>%
   add_recipe(app_recipe)
 
-#' We next specify the cross validation process using `vfold_cv()`. `v=5` specifies that there will be 5 partitions of the training data set and each hyperparameter combinations performance will be assessed using this cross validation procedure. 
+#' I next specify the cross validation process using `vfold_cv()`. `v=5` specifies that there will be 5 partitions of the training data set and each hyperparameter combinations performance will be assessed using this cross validation procedure. 
 
 app_folds <- vfold_cv(app_train, v=5)
 
@@ -270,10 +270,10 @@ app_tune <-
 ```
 # Modeling Process: Model Performance
 
-Our final model comprises 1,957 trees and achieves an accuracy of .93 along with an ROC-AUC of .58, mirroring the performance on the testing dataset. However, this model required 30 minutes to process.
+my final model comprises 1,957 trees and achieves an accuracy of .93 along with an ROC-AUC of .58, mirroring the performance on the testing dataset. HoIver, this model required 30 minutes to process.
 
 ```{r Modeling Process: Model Performance 7}
-#We use `select_best("roc_auc")` to pick the best hyperparameter combination, which is 1957 trees.
+#I use `select_best("roc_auc")` to pick the best hyperparameter combination, which is 1957 trees.
 best_model <- app_tune %>%
   select_best(metric = "roc_auc")
 
@@ -283,7 +283,7 @@ final_workflow <-
   app_wf %>% 
   finalize_workflow(best_model)
 
-#' We fit the model using the best hyperparameter combination on the entire training set and then validate its performance on the test data. `last_fit` helps us accomplish this. `split = split` specifies that `split` contains information about test and train split performed earlier. Using `collect_metrics` we report the accuracy and roc_auc values. 
+#' I fit the model using the best hyperparameter combination on the entire training set and then validate its performance on the test data. `last_fit` helps us accomplish this. `split = split` specifies that `split` contains information about test and train split performed earlier. Using `collect_metrics` I report the accuracy and roc_auc values. 
 
 final_fit <- final_workflow %>%
   last_fit(split = split)
@@ -293,7 +293,7 @@ final_fit <- final_workflow %>%
 #final_fit <- final_workflow %>%
  # last_fit(split = split)
 
-# We have an ROC_AUC of .5806702 which is similar to the testing dataset's estimate.
+# I have an ROC_AUC of .5806702 which is similar to the testing dataset's estimate.
 final_fit %>%
   collect_metrics()
 
@@ -303,11 +303,11 @@ final_tree
 ```
 # Results
 
-We managed to develop a predictive model using Random Forest that closely approximates the Accuracy and ROC-AUC metrics of the testing dataset. This model enables us to anticipate characteristics of customers who might encounter challenges in repaying their loans based on the available dataset.
+I managed to develop a predictive model using Random Forest that closely approximates the Accuracy and ROC-AUC metrics of the testing dataset. This model enables us to anticipate characteristics of customers who might encounter challenges in repaying their loans based on the available dataset.
 
-While we recognize the potential value of incorporating additional datasets such as installment payments or credit bureau information in our final model, due to time constraints, we limited our analysis to the application_train dataset.
+While I recognize the potential value of incorporating additional datasets such as installment payments or credit bureau information in my final model, due to time constraints, I limited my analysis to the application_train dataset.
 
-In conclusion, this project has enhanced our ability to discern the most suitable model for predictive purposes. Additionally, we have observed significant improvement in our coding skills and interpretation of metrics throughout this process.
+In conclusion, this project has enhanced my ability to discern the most suitable model for predictive purposes. Additionally, I have observed significant improvement in my coding skills and interpretation of metrics throughout this process.
 
 # Kaggle Submission
 ```{r}
